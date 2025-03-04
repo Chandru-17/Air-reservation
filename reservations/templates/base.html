@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flight Reservation{% endblock %}</title>
+    
+    <!-- ✅ Global CSS (optional) -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <!-- ✅ Page-specific CSS -->
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- ✅ Navbar (Loaded on all pages) -->
+    <div class="navbar">
+        <div>
+            <a href="{% url 'flight_list' %}">Home</a>
+            <a href="{% url 'flight_list' %}">Search Flights</a>
+            <a href="#" onclick="openPassengerForm(); return false;">Add Passenger</a>
+            <a href="{% url 'travelers' %}">travelers</a>
+
+            
+        </div>
+
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <span>Hello, {{ user.username }}</span>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ✅ Page-specific content -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        function openPassengerForm() {
+            // Check if we're on the flights list page
+            if (window.location.pathname.includes("flight_list")) {
+                showPassengerForm(); // Call the existing function
+            } else {
+                // Redirect to flights page and add a URL parameter
+                window.location.href = "{% url 'flight_list' %}?show_passenger_form=true";
+            }
+        }
+    </script>
+
+</body>
+</html>

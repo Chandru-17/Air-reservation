@@ -1,0 +1,36 @@
+/* Ensure the parent container holds both content and sidebar */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Flight content takes 70% of the space */
+.main {
+    width: 70%;
+}
+
+/* Sidebar stays on the right */
+.sidebar {
+    width: 25%;
+    padding: 20px;
+    border-left: 2px solid #ccc;
+    background-color: #f9f9f9; /* Optional: Makes it stand out */
+}
+
+/* Hide passenger form initially */
+.hidden {
+    display: none;
+}
+
+/* Styling adjustments */
+.form-group {
+    margin-bottom: 10px;
+}
+
+.Availfights {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

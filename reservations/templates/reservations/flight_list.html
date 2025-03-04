@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %}Available Flights{%endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/flights.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="main">
+    <div class="Availfights">
+      <h1>Available Flights</h1>
+
+      <!-- ✅ SEARCH FORM -->
+      <form method="GET" action="{% url 'flight_list' %}">
+        <input
+          type="text"
+          name="query"
+          placeholder="Search by city"
+          value="{{ query }}"
+        />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}! <a href="{% url 'logout' %}">Logout</a></p>
+    {% else %}
+    <p>
+      <a href="{% url 'login' %}">Login</a> |
+      <a href="{% url 'register' %}">Register</a>
+    </p>
+    {% endif %}
+
+    <ul>
+      {% for flight in flights %}
+      <li>
+        {{ flight.airline.name }} - {{ flight.flight_number }} 
+        ({{ flight.departure_city }} → {{ flight.destination_city }}) 
+        - ${{ flight.price }}
+        {% if user.is_authenticated %}
+            <a href="{% url 'book_flight' flight.id %}">Book Now</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login to Book</a>
+        {% endif %}
+    </li>
+      {% empty %}
+      <p>No flights available.</p>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Right Sidebar: Add Passenger -->
+  <div class="sidebar">
+    <h2>Manage Passengers</h2>
+    <button onclick="showPassengerForm()">➕ Add Passenger</button>
+
+    <div id="passenger-form" class="hidden">
+      <h3>New Passenger</h3>
+      <form id="add-passenger-form">
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" id="passenger-name" required />
+        </div>
+        <div class="form-group">
+          <label>Email:</label>
+          <input type="email" id="passenger-email" required />
+        </div>
+        <button type="button" onclick="addPassenger()">Add</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showPassengerForm() {
+      document.getElementById("passenger-form").classList.toggle("hidden");
+    }
+
+    function addPassenger() {
+      let name = document.getElementById("passenger-name").value;
+      let email = document.getElementById("passenger-email").value;
+
+      fetch("{% url 'add_passenger' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: JSON.stringify({ name: name, email: email }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            let passengerList = document.getElementById("passenger-list");
+            let newPassenger = document.createElement("li");
+            newPassenger.textContent = `${data.name} (${data.email})`;
+            passengerList.appendChild(newPassenger);
+          } else {
+            alert("Error adding passenger!");
+          }
+        });
+
+      // Clear form fields
+      document.getElementById("passenger-name").value = "";
+      document.getElementById("passenger-email").value = "";
+    }
+
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("show_passenger_form") === "true") {
+            showPassengerForm(); // Open the sidebar form
+        }
+    });
+  </script>
+  
+</div>
+{% endblock %}
