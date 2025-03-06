@@ -11,7 +11,7 @@
       <h1>Available Flights</h1>
 
       <!-- ✅ SEARCH FORM -->
-      <form method="GET" action="{% url 'flight_list' %}">
+      <form method="GET" action="{% url 'flight_list' %}" class="search">
         <input
           type="text"
           name="query"
@@ -33,14 +33,24 @@
 
     <ul>
       {% for flight in flights %}
-      <li>
-        {{ flight.airline.name }} - {{ flight.flight_number }} 
-        ({{ flight.departure_city }} → {{ flight.destination_city }}) 
-        - ${{ flight.price }}
+      <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); background: white;">
+        <span>
+            {{ flight.airline.name }} - {{ flight.flight_number }} 
+            (<i class="fa-solid fa-plane" style="color: #B197FC; margin: 0 8px;"></i> 
+            {{ flight.departure_city }} → {{ flight.destination_city }})
+            - ${{ flight.price }}
+        </span>
+        
         {% if user.is_authenticated %}
-            <a href="{% url 'book_flight' flight.id %}">Book Now</a>
+            <a href="{% url 'book_flight' flight.id %}" 
+               style="background: #28a745; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; border-radius: 35px;">
+                Book Now
+            </a>
         {% else %}
-            <a href="{% url 'login' %}">Login to Book</a>
+            <a href="{% url 'login' %}" 
+               style="background: #007bff; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; border-radius: 35px;">
+                Login to Book
+            </a>
         {% endif %}
     </li>
       {% empty %}
@@ -52,7 +62,7 @@
   <!-- Right Sidebar: Add Passenger -->
   <div class="sidebar">
     <h2>Manage Passengers</h2>
-    <button onclick="showPassengerForm()">➕ Add Passenger</button>
+    <button onclick="showPassengerForm()"><i class="fa-solid fa-user" style="color: #000000;"></i> Add Passenger</button>
 
     <div id="passenger-form" class="hidden">
       <h3>New Passenger</h3>
@@ -65,7 +75,7 @@
           <label>Email:</label>
           <input type="email" id="passenger-email" required />
         </div>
-        <button type="button" onclick="addPassenger()">Add</button>
+        <button type="button" onclick="addPassenger()" id="add">Add</button>
       </form>
     </div>
   </div>
@@ -113,5 +123,8 @@
     });
   </script>
   
+</div>
+<div>
+  <h1>hello</h1>
 </div>
 {% endblock %}

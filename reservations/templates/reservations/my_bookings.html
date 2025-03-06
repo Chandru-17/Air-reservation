@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Bookings{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/mybookings.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1><span class="mybook">My Bookings</span></h1>
+
+    {% if bookings %}
+        <table border="1">
+            <tr>
+                <th>Flight</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Seat</th>
+                <th>Passengers</th>
+                <th>Booked At</th>
+            </tr>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.flight.airline }} - {{ booking.flight.flight_number }}</td>
+                <td>{{ booking.flight.departure_city }}</td>
+                <td>{{ booking.flight.destination_city }}</td>
+                <td>{{ booking.seat_number }}</td>
+                <td>
+                    {% for passenger in booking.passengers.all %}
+                        {{ passenger.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ booking.booked_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>You have no reservations yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

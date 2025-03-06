@@ -1,0 +1,24 @@
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.form-group label {
+  font-weight: bold;
+  width: 150px; /* Adjust width as needed */
+}
+.form-group .field {
+  flex-grow: 1;
+  text-align: left;
+  display: flex;
+  gap: 15px; /* Space between checkboxes */
+}
+.passenger-checkbox {
+  display: flex;
+  align-items: center;
+}
+.passenger-checkbox label {
+  margin-left: 5px;
+  width: auto;
+}

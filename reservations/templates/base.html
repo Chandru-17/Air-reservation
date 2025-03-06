@@ -9,6 +9,11 @@
     <!-- ✅ Global CSS (optional) -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- ✅ Page-specific CSS -->
     {% block extra_head %}{% endblock %}
 </head>
@@ -20,9 +25,15 @@
             <a href="{% url 'flight_list' %}">Home</a>
             <a href="{% url 'flight_list' %}">Search Flights</a>
             <a href="#" onclick="openPassengerForm(); return false;">Add Passenger</a>
-            <a href="{% url 'travelers' %}">travelers</a>
+            <a href="{% url 'helpandsupport' %}">Help & Support</a>
 
-            
+            {% if user.is_authenticated %}
+                <a href="{% url 'my_bookings' %}">My Bookings</a>  <!-- ✅ Added My Bookings -->
+                
+            {% else %}
+                <a href="{% url 'login' %}">Login to view bookings</a>
+                
+            {% endif %}
         </div>
 
         <div class="nav-right">

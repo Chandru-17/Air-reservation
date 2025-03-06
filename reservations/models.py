@@ -22,7 +22,6 @@ class Flight(models.Model):
 
 class Passenger(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
 
@@ -30,9 +29,10 @@ class Passenger(models.Model):
         return self.name
 
 class Reservation(models.Model):
-    passenger = models.ManyToManyField(Passenger)  
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # ✅ Allows NULL users
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    seat_number = models.CharField(max_length=25)
+    passengers = models.ManyToManyField(Passenger)  # ✅ Correct field name (plural)
+    seat_number = models.CharField(max_length=20)
     booked_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

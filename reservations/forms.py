@@ -13,9 +13,10 @@ class RegisterForm(UserCreationForm):
 
 
 class ReservationForm(forms.ModelForm):
-    passenger = forms.ModelMultipleChoiceField(
+    passengers = forms.ModelMultipleChoiceField(
         queryset=Passenger.objects.all(),
         widget=forms.CheckboxSelectMultiple,  # ✅ Allows selecting multiple passengers
+        required=True,
         label="Select Passengers"
     )
 
@@ -27,4 +28,4 @@ class ReservationForm(forms.ModelForm):
 
     class Meta:
         model = Reservation
-        fields = ['passenger', 'flight', 'seat_number']
+        fields = ['passengers', 'flight', 'seat_number']

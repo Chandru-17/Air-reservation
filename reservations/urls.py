@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import flight_list,book_flight,booking_confirmation,payment,user_logout,add_passenger,travelers
+from .views import flight_list,book_flight,booking_confirmation,payment,user_logout,add_passenger,my_bookings,help_and_support
 
 from django.contrib.auth import views as auth_views
 from .views import register
@@ -16,6 +16,6 @@ urlpatterns = [
      path('payment/<int:reservation_id>/', payment, name='payment'),
     path('payment/success/<int:reservation_id>/', booking_confirmation, name='payment_success'),
     path('payment/cancel/', lambda request: render(request, 'reservations/payment_cancel.html'), name='payment_cancel'),
-    # path('my-bookings/', my_bookings, name='my_bookings'),
-    path('travelers/', travelers, name='travelers'),
+    path('my-bookings/', my_bookings, name='my_bookings'),
+    path('help-and-support/', help_and_support, name='helpandsupport'),
 ]

@@ -1,26 +1,25 @@
+{% extends 'base.html' %}
+{% load static %} 
 {% load custom_filters %} 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Booking Confirmation</title>
-</head>
-<body>
-    <h1>Booking Confirmed!</h1>
+{% block title %}Booking Confirmation{%endblock %}
+{% block extra_head %}
+{% endblock %}
+{% block content %}
+<h1>Booking Confirmed!</h1>
     <p>Thank you for booking your flight.</p>
     <p><strong>Flight:</strong> {{ reservation.flight.flight_number }} - {{ reservation.flight.airline.name }}</p>
     <p><strong>From:</strong> {{ reservation.flight.departure_city }} → <strong>To:</strong> {{ reservation.flight.destination_city }}</p>
     <p><strong>Seat Number:</strong> {{ reservation.seat_number }}</p>
     <p><strong>Passengers:</strong> 
-        {% for passenger in reservation.passenger.all %}
+        {% for passenger in reservation.passengers.all %}
             {{ passenger.name }}{% if not forloop.last %}, {% endif %}
         {% endfor %}
     </p>
 
-    <p><strong>Total cost:</strong>${{ reservation.flight.price|mul:reservation.passenger.count|floatformat:2 }}</p>
+    <p><strong>Total cost:</strong>${{ reservation.flight.price|mul:reservation.passengers.count|floatformat:2 }}</p>
 
     <a href="{% url 'payment' reservation.id %}">Proceed to Payment</a>
 
     <br><br>
     <a href="{% url 'flight_list' %}">Back to Flights</a>
-</body>
-</html>
+{% endblock %}

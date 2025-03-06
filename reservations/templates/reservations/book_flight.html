@@ -1,66 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Book Flight</title>
-    <style>
-        .form-group {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .form-group label {
-            font-weight: bold;
-            width: 150px; /* Adjust width as needed */
-        }
-        .form-group .field {
-            flex-grow: 1;
-            text-align: left;
-            display: flex;
-            gap: 15px; /* Space between checkboxes */
-        }
-        .passenger-checkbox {
-            display: flex;
-            align-items: center;
-        }
-        .passenger-checkbox label {
-            margin-left: 5px;
-            width: auto;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %}Book Flight{%endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/bookflight.css' %}" />
+{% endblock %}
+{% block content %}
     <h1>Book Flight: {{ flight.flight_number }}</h1>
     <form method="POST">
-        {% csrf_token %}
+    {% csrf_token %}
 
-        <div class="form-group">
-            <label>Select Passengers:</label>
-            <div class="field">
-                {% for passenger in form.passenger.field.queryset %}
-                    <div class="passenger-checkbox">
-                        <input type="checkbox" name="passenger" value="{{ passenger.id }}">
-                        <label>{{ passenger.name }}</label>
-                    </div>
-                {% endfor %}
-            </div>
+    <div class="form-group">
+    <label>Select Passengers:</label>
+    <div class="field">
+    {% for passenger in form.passengers.field.queryset %}
+        <div class="passenger-checkbox">
+            <input type="checkbox" name="passengers" value="{{ passenger.id }}">
+            <label>{{ passenger.name }}</label>
         </div>
+    {% endfor %}
+    </div>
+    </div>
 
-        <div class="form-group">
-            <label>Select Flight:</label>
-            <div class="field">
-                {{ form.flight }}
-            </div>
-        </div>
+    <div class="form-group">
+    <label>Select Flight:</label>
+    <div class="field">
+    {{ form.flight }}
+    </div>
+    </div>
 
-        <div class="form-group">
-            <label>Seat Number:</label>
-            <div class="field">
-                {{ form.seat_number }}
-            </div>
-        </div>
+    <div class="form-group">
+    <label>Seat Number:</label>
+    <div class="field">
+    {{ form.seat_number }}
+    </div>
+    </div>
 
-        <button type="submit">Confirm Booking</button>
+    <button type="submit">Confirm Booking</button>
     </form>
-</body>
-</html>
+{% endblock %}
